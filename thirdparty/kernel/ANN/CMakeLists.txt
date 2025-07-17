@@ -25,6 +25,12 @@ set(SOURCE_FILES
         src/perf.cc
         )
 
-
 add_library(ann SHARED ${SOURCE_FILES})
+
+
+set_target_properties(ann PROPERTIES
+    BUILD_RPATH "$ORIGIN"
+    INSTALL_RPATH "$ORIGIN"
+)
+
 #target_link_libraries(pyscan)

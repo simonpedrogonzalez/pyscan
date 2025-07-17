@@ -1,5 +1,5 @@
-from libpyscan import *
-import libpyscan as lp
+from .libpyscan import *
+from . import libpyscan as lp
 import random
 import itertools
 import math
