@@ -79,7 +79,6 @@ namespace pyscan {
     double evaluate(discrepancy_func_t const& f, double m, double m_tot, double b, double b_tot) {
         return f(m, m_tot, b, b_tot);
     }
-
 };
 
 
@@ -118,7 +117,6 @@ double evaluate_halfplane_traj(pyscan::halfspace2_t const& d1, pyscan::trajector
 double evaluate_halfplane_labeled(pyscan::halfspace2_t const& d1, pyscan::lpoint_list_t const&  mpts, pyscan::lpoint_list_t const& bpts, pyscan::discrepancy_func_t const& disc) {
     return pyscan::evaluate_range(d1, mpts, bpts, disc);
 }
-
 
 
 PYBIND11_MODULE(libpyscan, pyscan_module){
@@ -209,7 +207,10 @@ PYBIND11_MODULE(libpyscan, pyscan_module){
             .def("parallel_lte", &pyscan::Point<2>::parallel_lte)
             .def("__str__", &pyscan::Point<>::str)
             .def("__repr__", &pyscan::Point<>::str)
-            .def("__eq__", &pyscan::Point<>::operator==);
+            .def("__eq__", &pyscan::Point<>::operator==)
+            .def("__hash__", [](const pyscan::Point<2>& p) {
+                return pyscan::Point<2>::hash(p);
+            });
 
     py::class_<pyscan::pt3_t>(pyscan_module, "Point3")
             .def(py::init<double, double, double, double>())
@@ -231,7 +232,10 @@ PYBIND11_MODULE(libpyscan, pyscan_module){
             .def("parallel_lte", &pyscan::Point<3>::parallel_lte)
             .def("__str__", &pyscan::Point<3>::str)
             .def("__repr__", &pyscan::Point<3>::str)
-            .def("__eq__", &pyscan::Point<3>::operator==);
+            .def("__eq__", &pyscan::Point<3>::operator==)
+            .def("__hash__", [](const pyscan::Point<3>& p) {
+                return pyscan::Point<3>::hash(p);
+            });
 
     /////////////////////////////////////////////////////////////////////
     //Kernel Scanning Wrappers//////////////////////////////////////////
@@ -313,6 +317,7 @@ PYBIND11_MODULE(libpyscan, pyscan_module){
     py::class_<pyscan::WPoint<2>, pyscan::Point<2>>(pyscan_module, "WPoint")
         .def(py::init<double, double, double, double>())
         .def("get_weight", &pyscan::WPoint<2>::get_weight);
+
 
     py::class_<pyscan::LPoint<2>, pyscan::WPoint<2>>(pyscan_module, "LPoint")
         .def(py::init<size_t, double, double, double, double>())
