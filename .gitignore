@@ -145,3 +145,6 @@ build/
 #other
 .DS*
 .vscode/
+
+# Include the pyscan code
+!src/cpp/lib/
