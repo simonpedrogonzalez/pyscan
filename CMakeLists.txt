@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.5)
 project(pyscan LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -89,7 +89,6 @@ set_target_properties(ann PROPERTIES
     INSTALL_RPATH "$ORIGIN"
 )
 
-
 # Install Python module and dependencies into the `pyscan/` package dir
 install(TARGETS libpyscan LIBRARY DESTINATION pyscan COMPONENT default)
 install(FILES
@@ -99,3 +98,6 @@ install(FILES
     DESTINATION pyscan
     COMPONENT default
 )
+
+
+
