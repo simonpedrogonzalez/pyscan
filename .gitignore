@@ -148,3 +148,5 @@ build/
 
 # Include the pyscan code
 !src/cpp/lib/
+
+data/*
