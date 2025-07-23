@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <functional>
 #include <queue>
+#include <algorithm>
 
 
 namespace pyscan {
