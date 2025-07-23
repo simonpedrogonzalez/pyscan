@@ -99,5 +99,43 @@ install(FILES
     COMPONENT default
 )
 
+option(PYSCAN_BUILD_TESTS "Build tests" OFF)
+if(PYSCAN_BUILD_TESTS)
 
+set(THIRDPARTY_LIBRARIES
+    discrepancy
+    ann
+    appext
+    CGAL::CGAL
+    GSL::gsl
+    GSL::gslcblas
+)
+    
+include(CTest)
+    enable_testing()
 
+    include(FetchContent)
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/release-1.12.1.zip
+    )
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
+
+    set(TEST_NAMES
+        DiskScan_unittest
+        FunctionApprox_unittest
+        Halfplane_unittest
+        Testing_unittest
+        Point_unittest
+        RectangleScan_unittest
+        trajectory_unittest
+    )
+
+    foreach(TEST ${TEST_NAMES})
+        add_executable(${TEST} test/${TEST}.cpp $<TARGET_OBJECTS:core_obj>)
+        target_link_libraries(${TEST} PRIVATE gtest_main ${THIRDPARTY_LIBRARIES})
+        target_include_directories(${TEST} PRIVATE ${CMAKE_SOURCE_DIR}/src/cpp/lib/include)
+        add_test(NAME ${TEST} COMMAND ${TEST})
+    endforeach()
+endif()
