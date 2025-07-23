@@ -2,9 +2,9 @@
 
 **[pyscan-stats](https://pypi.org/project/pyscan-stats/)** is a Python package for spatial scan statistics, created from a fork of the original **[pyscan](https://github.com/michaelmathen/pyscan)** library by Michael Matheny.
 
-Original repository: [michaelmathen/pyscan](https://github.com/michaelmathen/pyscan)
-Original documentation: [https://michaelmathen.github.io/pyscan/](https://michaelmathen.github.io/pyscan/)
-Updated examples with data: [https://github.com/simonpedrogonzalez/pyscan-stats-resources](https://github.com/simonpedrogonzalez/pyscan-stats-resources)
+- Original repository: [michaelmathen/pyscan](https://github.com/michaelmathen/pyscan)
+- Original documentation: [https://michaelmathen.github.io/pyscan/](https://michaelmathen.github.io/pyscan/)
+- Updated examples with data: [https://github.com/simonpedrogonzalez/pyscan-stats-resources](https://github.com/simonpedrogonzalez/pyscan-stats-resources)
 
 # Dev installation
 
