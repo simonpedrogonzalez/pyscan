@@ -150,3 +150,24 @@ build/
 !src/cpp/lib/
 
 data/*
+ex_philli.py
+
+ex_reg_p2.py
+
+ex_reg.py
+
+ex_region_coreset.py
+
+ex_traj_1.py
+
+ex_traj_taxi.py
+
+ex_traj_taxi2.py
+
+ex1.py
+
+ex2.py
+
+ex3.py
+
+preprocess_traj.py
