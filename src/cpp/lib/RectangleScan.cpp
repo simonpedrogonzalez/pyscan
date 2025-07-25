@@ -4,9 +4,9 @@
 #include <functional>
 #include <tuple>
 #include <unordered_set>
-//#include <zlib.h>
 #include <memory>
 #include <unordered_map>
+#include <pybind11/numpy.h>
 
 #include "Gridding.hpp"
 #include "Range.hpp"
@@ -176,6 +176,70 @@ namespace pyscan {
             total_blue_weight += pt.get_weight();
         }
     }
+
+    //  Constructor from numpy arrays
+    Grid::Grid(pybind11::array_t<double> x_coords_np, // 1D sorted array of coordinates
+        pybind11::array_t<double> y_coords_np, // 1D sorted array of coordinates
+        pybind11::array_t<double> red_points_np,  // Expected 2D array of shape (N, 3), (x, y, weight)
+        pybind11::array_t<double> blue_points_np) {
+
+        auto x_buf = x_coords_np.request();
+        auto y_buf = y_coords_np.request();
+        auto red_buf = red_points_np.request();
+        auto blue_buf = blue_points_np.request();
+
+        size_t x_size = x_buf.shape[0];
+        size_t y_size = y_buf.shape[0];
+
+        x_coords.assign(static_cast<double*>(x_buf.ptr), static_cast<double*>(x_buf.ptr) + x_size);
+        y_coords.assign(static_cast<double*>(y_buf.ptr), static_cast<double*>(y_buf.ptr) + y_size);
+
+        r = x_size;
+
+        red_counts.resize(r * r, 0);
+        blue_counts.resize(r * r, 0);
+
+        if (red_buf.ndim != 2 || red_buf.shape[1] != 3) {
+            throw std::runtime_error("red_points_np must be a 2D array with shape (N, 3)");
+        }
+        if (blue_buf.ndim != 2 || blue_buf.shape[1] != 3) {
+            throw std::runtime_error("blue_points_np must be a 2D array with shape (N, 3)");
+        }
+
+        double* red_data = static_cast<double*>(red_buf.ptr);
+        double* blue_data = static_cast<double*>(blue_buf.ptr);
+
+        // Insert red points
+        for (size_t i = 0; i < static_cast<size_t>(red_buf.shape[0]); i++) {
+            double x = red_data[i * 3 + 0];
+            double y = red_data[i * 3 + 1];
+            double value = red_data[i * 3 + 2];
+
+            long ix = std::lower_bound(x_coords.begin(), x_coords.end(), x) - x_coords.begin();
+            long iy = std::lower_bound(y_coords.begin(), y_coords.end(), y) - y_coords.begin();
+
+            if (ix < r && iy < r) {
+                red_counts[iy * r + ix] += value;
+            }
+            total_red_weight += value;
+        }
+
+        // Insert blue points
+        for (size_t i = 0; i < static_cast<size_t>(blue_buf.shape[0]); i++) {
+            double x = blue_data[i * 3 + 0];  // ✅ Correct indexing
+            double y = blue_data[i * 3 + 1];
+            double value = blue_data[i * 3 + 2];
+
+            long ix = std::lower_bound(x_coords.begin(), x_coords.end(), x) - x_coords.begin();
+            long iy = std::lower_bound(y_coords.begin(), y_coords.end(), y) - y_coords.begin();
+
+            if (ix < r && iy < r) {
+                blue_counts[iy * r + ix] += value;
+            }
+            total_blue_weight += value;
+        }
+    }
+
 
     double Grid::totalRedWeight() const {
         return total_red_weight;

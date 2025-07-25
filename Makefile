@@ -4,12 +4,13 @@ init:
 	uv venv .venv
 	source .venv/bin/activate && uv pip install ".[dev]"
 	mkdir -p build
+	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 
 dev:
 	@echo "Building and reinstalling..."
 	mkdir -p build
-	cmake --build build --parallel
-	uv pip install . --no-deps --no-build-isolation --config-settings=build-dir=build --force-reinstall
+	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+	uv pip install . --no-deps --no-build-isolation --force-reinstall
 
 test:
 	@echo "Running tests..."

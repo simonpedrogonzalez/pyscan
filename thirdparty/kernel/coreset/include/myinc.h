@@ -14,7 +14,7 @@
 #define EQUAL(x,y)      (fabs((x)-(y)) < 1E-15)
 #define SQR(x)		((x)*(x))
 
-#define pi		3.1415926
+#define my_pi		3.1415926
 #define TIME_INFTY	1E15
 
 /* return squared length of vector */

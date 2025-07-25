@@ -45,6 +45,8 @@ target_include_directories(core_obj PUBLIC
     ${CMAKE_SOURCE_DIR}/thirdparty/kernel/coreset/include
 )
 
+target_link_libraries(core_obj PRIVATE pybind11::module)
+
 # Compile the bindings module using the core object files
 pybind11_add_module(libpyscan MODULE
     $<TARGET_OBJECTS:core_obj>

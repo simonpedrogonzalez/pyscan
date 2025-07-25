@@ -8,6 +8,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 
 #include "KernelScanning.hpp"
 #include "JeffCodes.hpp"
@@ -128,6 +129,8 @@ PYBIND11_MODULE(libpyscan, pyscan_module){
 
     py::class_<pyscan::Grid>(pyscan_module, "Grid")
             .def(py::init<size_t, pyscan::wpoint_list_t const&, pyscan::wpoint_list_t const&>())
+            .def(py::init<py::array_t<double>, py::array_t<double>, py::array_t<double>, py::array_t<double>>(),
+                pybind11::arg("x_coords"), pybind11::arg("y_coords"), pybind11::arg("red_points"), pybind11::arg("blue_points"))
             .def("totalRedWeight", &pyscan::Grid::totalRedWeight)
             .def("totalBlueWeight", &pyscan::Grid::totalBlueWeight)
             .def("redWeight", &pyscan::Grid::redWeight)
@@ -137,7 +140,13 @@ PYBIND11_MODULE(libpyscan, pyscan_module){
             .def("xCoord", &pyscan::Grid::xCoord)
             .def("yCoord", &pyscan::Grid::yCoord)
             .def("toRectangle", &pyscan::Grid::toRectangle)
-            .def("size", &pyscan::Grid::size);
+            .def("size", &pyscan::Grid::size)
+            .def("redCount", &pyscan::Grid::redCount)
+            .def("blueCount", &pyscan::Grid::blueCount)
+            .def("getRedCounts", &pyscan::Grid::getRedCounts)
+            .def("getBlueCounts", &pyscan::Grid::getBlueCounts)
+            .def("total_red_weight", &pyscan::Grid::totalRedWeight)
+            .def("total_blue_weight", &pyscan::Grid::totalBlueWeight);
 
     py::class_<pyscan::Rectangle>(pyscan_module, "Rectangle")
             .def(py::init<double, double, double, double>())

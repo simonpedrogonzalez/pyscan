@@ -289,7 +289,7 @@ glPointSet * glPointSet::getCoreSet2( int grids )
 	{
 		vec.setComponent( dim, 1 );
 		for ( j = 0; j < dim -1; j ++ )
-			vec.setComponent( j+1, 1/tan( pi/(2 * grids) + pi * index[j] / grids) );
+			vec.setComponent( j+1, 1/tan( my_pi/(2 * grids) + my_pi * index[j] / grids) );
 		vec.normalize( sqrt( dim ) + 2 );
 
 		for ( j = 0; j < dim; j ++ )
@@ -407,7 +407,7 @@ glPointSet * glPointSet::getCoreSet3( int grids, double eps, unsigned char * ff 
 	{
 		vec.setComponent( dim, 1 );
 		for ( j = 0; j < dim -1; j ++ )
-			vec.setComponent( j+1, tan( pi/(2 * grids) + pi * index[j] / grids) );
+			vec.setComponent( j+1, tan( my_pi/(2 * grids) + my_pi * index[j] / grids) );
 		vec.normalize( sqrt( dim ) + 2 );
 
 		for ( j = 0; j < dim; j ++ )

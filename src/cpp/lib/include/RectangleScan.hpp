@@ -16,6 +16,8 @@
 #include <tuple>
 #include <limits>
 #include <iostream>
+#include <pybind11/numpy.h>
+
 
 #include "Sampling.hpp"
 #include "BloomFilter.hpp"
@@ -136,6 +138,10 @@ namespace pyscan {
         Grid(size_t r_arg, wpoint_list_t red, wpoint_list_t blue);
         Grid(wpoint_list_t const& red_points, wpoint_list_t const& blue_points);
         Grid(point_list_t const& net, wpoint_list_t const& red, wpoint_list_t const& blue);
+        Grid(pybind11::array_t<double> x_coords_np,
+            pybind11::array_t<double> y_coords_np,
+            pybind11::array_t<double> red_values_np,
+            pybind11::array_t<double> blue_values_np);
         double totalRedWeight() const;
         double totalBlueWeight() const;
         double redCount(size_t row, size_t col) const;
@@ -147,6 +153,9 @@ namespace pyscan {
 
         double yCoord(size_t row) const;
         double xCoord(size_t col) const;
+
+        const std::vector<double>& getRedCounts() const { return red_counts; }
+        const std::vector<double>& getBlueCounts() const { return blue_counts; }
 
         size_t size() const;
         Rectangle toRectangle(Subgrid const &sg) const;
