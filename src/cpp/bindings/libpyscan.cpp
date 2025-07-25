@@ -369,8 +369,10 @@ PYBIND11_MODULE(libpyscan, pyscan_module){
 
 
     pyscan_module.def("max_subgrid", &pyscan::max_subgrid);
-    pyscan_module.def("max_subgrid_convex", &pyscan::max_subgrid_convex);
-    pyscan_module.def("max_subgrid_linear", &pyscan::max_subgrid_linear);
+    pyscan_module.def("max_subgrid_convex", pybind11::overload_cast<const pyscan::Grid&, double, const pyscan::discrepancy_func_t&>(&pyscan::max_subgrid_convex));
+    pyscan_module.def("max_subgrid_convex", pybind11::overload_cast<const pyscan::Grid&, double, const pyscan::discrepancy_func_t&, size_t>(&pyscan::max_subgrid_convex));
+    pyscan_module.def("max_subgrid_linear", pybind11::overload_cast<const pyscan::Grid&, double, double>(&pyscan::max_subgrid_linear));
+    pyscan_module.def("max_subgrid_linear", pybind11::overload_cast<const pyscan::Grid&, double, double, size_t>(&pyscan::max_subgrid_linear));
     pyscan_module.def("max_rectangle", &pyscan::max_rectangle);
 
     pyscan_module.def("make_net_grid", &pyscan::make_net_grid);

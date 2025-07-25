@@ -171,7 +171,9 @@ namespace pyscan {
 
 
     Subgrid max_subgrid_convex(Grid const &grid, double eps, discrepancy_func_t const &f);
+    Subgrid max_subgrid_convex(Grid const &grid, double eps, discrepancy_func_t const &f, size_t max_area);
     Subgrid max_subgrid_linear(Grid const &grid, double a, double b);
+    Subgrid max_subgrid_linear(Grid const &grid, double a, double b, size_t max_area);
     Subgrid max_subgrid(Grid const &grid, discrepancy_func_t const &func);
 
     //////////////////////////////////////////////////////////////
