@@ -8,7 +8,7 @@ init:
 cpp:
 	@echo "Building..."
 	mkdir -p build
-	source .venv/bin/activate cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DPYSCAN_BUILD_TESTS=ON
+	source .venv/bin/activate && cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DPYSCAN_BUILD_TESTS=ON
 	source .venv/bin/activate && cmake --build build
 
 py:
