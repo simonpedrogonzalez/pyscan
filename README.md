@@ -28,7 +28,7 @@ max_area = 750 # Maximum number of pixels in the subgrid
 max_subgrid = pyscan.max_subgrid_convex(grid, prec, disc_f, max_area)
 ```
 
-Allows for specifying a maximum area for the subgrid, useful when the interest is in smaller anomalies or when computational resources are limited. The implementation uses a sliding window version of Kadane's algorithm.
+Allows for specifying a maximum area for the subgrid, useful when the interest is in smaller anomalies or when computational resources are limited. Usage example [here](https://github.com/simonpedrogonzalez/pyscan-stats-resources/blob/master/examples_with_data/AreaLimitedGridScanning.py). The implementation uses a sliding window version of Kadane's algorithm.
 
 # General Improvements
 
@@ -38,7 +38,7 @@ Allows for specifying a maximum area for the subgrid, useful when the interest i
 
 # Dev installation
 
-Clone the repository and run:
+Clone the [repository](https://github.com/simonpedrogonzalez/pyscan) and run:
 
 - `make init`: initialize repository (`uv` package manager required)
 - `make cpp`: compiles C++ code into the `build` directory
