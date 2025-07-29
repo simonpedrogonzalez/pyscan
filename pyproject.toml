@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pyscan-stats"
-version = "0.1.1"
+version = "1.0.0"
 description = "C++ spatial scan wrapper for Python"
 requires-python = ">=3.8"
 authors = [{ name = "Michael Matheny" }]

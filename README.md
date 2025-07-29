@@ -60,7 +60,11 @@ You are all set to start developing! The following utility commands are availabl
 - `make test`: runs the C++ tests, only works after compiling the C++ code.
 - `make clean`: removes `build/`, `dist/` and packaging artifacts.
 
-Note: if an error occurs during `make cpp` or `make test`, try running `make clean` first.
+Notes:
+If an error occurs executing one of the commands, try:
+- Manually activating the venv `source .venv/bin/activate` and running the command again.
+- Running `make clean` before `make cpp` to ensure a clean build.
+- This setup was tested both on macOS and Linux.
 
 # About pyscan
 
