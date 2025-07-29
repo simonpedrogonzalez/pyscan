@@ -45,7 +45,7 @@ Allows for specifying a maximum area for the subgrid, useful when the interest i
 
 # Dev installation
 
-1. Clone the [repository](https://github.com/simonpedrogonzalez/pyscan).
+1. `git clone https://github.com/simonpedrogonzalez/pyscan`.
 1. [Install `uv` package manager](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) if not already installed.
 2. Install CMake, Boost, GSL, CGAL if not already installed. For example, on Mac:
     ```bash
