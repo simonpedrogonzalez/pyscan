@@ -8,7 +8,7 @@
 #include <functional>
 
 #include "Point.hpp"
-
+#include "RectangleScan.hpp"
 
 namespace pyscantest {
 
@@ -57,5 +57,10 @@ namespace pyscantest {
 		return out;
 	}
 
+	pyscan::Grid
+	grid_from_matrices(const std::vector<double>& xs,
+					const std::vector<double>& ys,
+					const std::vector<std::vector<double>>&  red,
+					const std::vector<std::vector<double>>&  blue);
 }
 #endif //PYSCAN_UTILITIES_HPP

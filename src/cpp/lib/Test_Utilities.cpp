@@ -201,27 +201,32 @@ namespace pyscantest {
         });
         return list;
     }
-// auto randomLPointsUnique(int test_size) -> std::vector<pyscan::LPoint<>> {
-//         std::random_device rd;
-//         std::default_random_engine generator(rd());
-//         std::uniform_real_distribution<double> distribution (0.0,1.0);
-//         std::vector<pyscan::LPoint<>> points;
-//         for (int i = 0; i < test_size; i++) {
-//             points.emplace_back(i,
-//               distribution(generator),
-//               distribution(generator),
-//               distribution(generator),
-//               distribution(generator));
-//         }
-//         return points;
-//     }
 
-// auto removeLabels(std::vector<pyscan::LPoint<>> const& pts) -> std::vector<pyscan::Point<>> {
-//   std::vector<pyscan::Point<>> new_pts;
-//   for (auto &pt : pts) {
-//     new_pts.push_back(pyscan::removeLabel(pt));
-//   }
-//   return new_pts;
-// }
+    pyscan::Grid grid_from_matrices(const std::vector<double>& xs,
+					const std::vector<double>& ys,
+					const std::vector<std::vector<double>>&  red,
+					const std::vector<std::vector<double>>&  blue) {
+		using namespace pyscan;
 
+		const std::size_t rows = ys.size();
+		const std::size_t cols = xs.size();
+		assert(red .size()==rows && red [0].size()==cols);
+		assert(blue.size()==rows && blue[0].size()==cols);
+
+		wpoint_list_t red_pts; red_pts.reserve(rows*cols);
+		wpoint_list_t blue_pts; blue_pts.reserve(rows*cols);
+		point_list_t net; net.reserve(rows*cols);
+
+		for (std::size_t iy=0; iy<rows; ++iy)
+			for (std::size_t ix=0; ix<cols; ++ix) {
+				double x = xs[ix];
+				double y = ys[iy];
+
+				red_pts.emplace_back(red[iy][ix], x, y, 1.0);
+				blue_pts.emplace_back(blue[iy][ix], x, y, 1.0);
+				net.emplace_back(x, y, 1.0);
+			}
+
+		return pyscan::Grid(net, red_pts, blue_pts);
+	}
 }

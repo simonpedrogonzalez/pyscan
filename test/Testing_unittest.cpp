@@ -16,7 +16,7 @@
 #include <random>
 #include <iostream>
 
-pyscan::discrepancy_func_t stat = [](double m, double m_total, double b, double b_total) {
+pyscan::discrepancy_func_t rk_stat = [](double m, double m_total, double b, double b_total) {
     return fabs(m / m_total - b / b_total);
 };
 
@@ -30,7 +30,7 @@ int main() {
     auto b_pts = pyscantest::randomLPoints2(s_size, 100);
 
     auto begin = std::clock();
-    auto [d1, d1value] = pyscan::max_disk_scale_labeled(n_pts, m_pts, b_pts, true, min_res, stat);
+    auto [d1, d1value] = pyscan::max_disk_scale_labeled(n_pts, m_pts, b_pts, true, min_res, rk_stat);
 
     auto end = std::clock();
 
@@ -39,7 +39,7 @@ int main() {
 
     auto nn_pts = pyscantest::removeLW(n_pts);
     begin = std::clock();
-    std::tie(d1, d1value) = pyscan::max_disk_scale_labeled_alt(nn_pts, m_pts, b_pts, min_res, stat);
+    std::tie(d1, d1value) = pyscan::max_disk_scale_labeled_alt(nn_pts, m_pts, b_pts, min_res, rk_stat);
 
     end = std::clock();
 

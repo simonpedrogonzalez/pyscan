@@ -75,6 +75,66 @@ namespace {
 
     }
 
+   TEST(max_rectangle, linear_max_area) {
+        using namespace pyscan;
+        std::vector<double> xs = {0, 1, 2};
+        std::vector<double> ys = {0, 1, 2};
+        std::vector<std::vector<double>> red = {
+            {1, 1, 1},
+            {1, 2, 2},
+            {1, 2, 2}};
+        std::vector<std::vector<double>> blue = {
+            {1, 1, 1},
+            {1, 1, 1},
+            {1, 1, 1}};
+        pyscan::Grid grid = pyscantest::grid_from_matrices(xs, ys, red, blue);
+        
+        // wpoint_list_t red_pts = {};
+        // wpoint_list_t blue_pts = {};
+        // point_list_t net = {};
+
+        // for (int i = 0; i < 3; i++) {
+        //     net.emplace_back(xs[i], ys[i], 1.0);
+        //     for (int j = 0; j < 3; j++) {
+        //         red_pts.emplace_back(red[i][j], xs[i], ys[j], 1.0);
+        //         blue_pts.emplace_back(blue[i][j], xs[i], ys[j], 1.0);
+        //     }
+        // }
+
+        // pyscan::Grid grid(net, red_pts, blue_pts);
+
+        // print the grid
+        for (size_t i=0; i<grid.size(); i++) {
+            for (size_t j=0; j<grid.size(); j++) {
+                std::cout << grid.redWeight(i, j) << " ";
+            }
+            std::cout << std::endl;
+        }
+
+        auto full    = max_subgrid_linear(grid, 1.0, -1.0, 1000);
+        auto rectF   = grid.toRectangle(full);
+
+        auto fvalue = full.fValue();
+        std::cout << "Full rectangle fValue: " << fvalue << std::endl;
+        EXPECT_FLOAT_EQ(fvalue, 0.170940170940171);
+
+        EXPECT_EQ(rectF.lowX(), 1);
+        EXPECT_EQ(rectF.upX() , 2);
+        EXPECT_EQ(rectF.lowY(), 1);
+        EXPECT_EQ(rectF.upY() , 2);
+
+        //--------------------------------------------------------- limited (area 1)
+        auto limited = max_subgrid_linear(grid, 1.0, -1.0, /*maxA=*/1);
+        auto rectL   = grid.toRectangle(limited);
+
+        EXPECT_EQ(rectL.lowX(), 1);
+        EXPECT_EQ(rectL.upX() , 1);
+        EXPECT_EQ(rectL.lowY(), 1);
+        EXPECT_EQ(rectL.upY() , 1);
+    }
+
+
+
 
     std::tuple<std::vector<size_t>, pyscan::epoint_list_t, pyscan::epoint_list_t> initialize_pts() {
         const static int n_size = 50;
