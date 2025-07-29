@@ -8,7 +8,7 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-#Need this for GSL
+# Need this for GSL
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_FLAGS_DEBUG "-fPIC -Wall -Wextra -g -O1 -fno-omit-frame-pointer")
 set(CMAKE_CXX_FLAGS_RELEASE "-fPIC -w -O2 -march=native -DNDEBUG") #work for intel chip
@@ -16,14 +16,11 @@ set(CMAKE_C_FLAGS_DEBUG "-fPIC -Wall -Wextra -g -O1 -fno-omit-frame-pointer")
 set(CMAKE_C_FLAGS_RELEASE "-fPIC -w -O2 -march=native -DNDEBUG") #work for intel chip
 
 # Dependencies
-# find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 find_package(pybind11 CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 find_package(CGAL REQUIRED)
 find_package(GSL REQUIRED)
-
-# Add pybind11 from the thirdpary directory I DONT WANT IT VENDORED
-# add_subdirectory(thirdparty/pybind11)
 
 # Build the thirdparty libraries
 add_subdirectory(thirdparty/discrepancy)
@@ -33,11 +30,8 @@ add_subdirectory(thirdparty/kernel/coreset)
 # Core sources
 file(GLOB_RECURSE CPP_SRC CONFIGURE_DEPENDS src/cpp/lib/*.cpp)
 
-# Compile the core sources
 add_library(core_obj OBJECT ${CPP_SRC})
 
-# Include all the header files
-# and propagate them
 target_include_directories(core_obj PUBLIC
     ${CMAKE_SOURCE_DIR}/src/cpp/lib/include
     ${CMAKE_SOURCE_DIR}/thirdparty/discrepancy/include
@@ -45,9 +39,8 @@ target_include_directories(core_obj PUBLIC
     ${CMAKE_SOURCE_DIR}/thirdparty/kernel/coreset/include
 )
 
-target_link_libraries(core_obj PRIVATE pybind11::module)
+target_link_libraries(core_obj PRIVATE pybind11::module ${Python3_LIBRARIES})
 
-# Compile the bindings module using the core object files
 pybind11_add_module(libpyscan MODULE
     $<TARGET_OBJECTS:core_obj>
     src/cpp/bindings/libpyscan.cpp
@@ -58,12 +51,6 @@ set_target_properties(libpyscan PROPERTIES
     INSTALL_RPATH "$ORIGIN"
 )
 
-# i dont need this
-# target_include_directories(libpyscan PRIVATE
-#     ${CMAKE_SOURCE_DIR}/src/cpp/lib/include
-# )
-
-# I do need this
 target_include_directories(ann PUBLIC
     ${CMAKE_SOURCE_DIR}/thirdparty/kernel/ANN/include
 )
@@ -71,7 +58,7 @@ add_dependencies(libpyscan ann)
 
 # Link libraries
 target_link_libraries(libpyscan PRIVATE
-    core_obj # I added this
+    core_obj
     discrepancy
     ann
     appext
@@ -79,7 +66,6 @@ target_link_libraries(libpyscan PRIVATE
     GSL::gsl
     GSL::gslcblas
 )
-# target_link_libraries(libpyscan PRIVATE ann)
 
 set_target_properties(libpyscan PROPERTIES
     BUILD_RPATH "$ORIGIN"
@@ -101,21 +87,21 @@ install(FILES
     COMPONENT default
 )
 
-option(PYSCAN_BUILD_TESTS "Build tests" OFF)
+option(PYSCAN_BUILD_TESTS "Build tests" ON)
 if(PYSCAN_BUILD_TESTS)
 
-set(THIRDPARTY_LIBRARIES
-    discrepancy
-    ann
-    appext
-    CGAL::CGAL
-    GSL::gsl
-    GSL::gslcblas
-)
+    message(STATUS "BUILDING TESTS")
+    set(THIRDPARTY_LIBRARIES
+        discrepancy
+        ann
+        appext
+        CGAL::CGAL
+        GSL::gsl
+        GSL::gslcblas
+    )
     
-include(CTest)
+    include(CTest)
     enable_testing()
-
     include(FetchContent)
     FetchContent_Declare(
         googletest
@@ -123,7 +109,6 @@ include(CTest)
     )
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
-
     set(TEST_NAMES
         DiskScan_unittest
         FunctionApprox_unittest
@@ -133,11 +118,20 @@ include(CTest)
         RectangleScan_unittest
         trajectory_unittest
     )
+    set(TEST_OUTPUT_DIR ${CMAKE_BINARY_DIR}/test)
+    file(MAKE_DIRECTORY ${TEST_OUTPUT_DIR})
 
     foreach(TEST ${TEST_NAMES})
         add_executable(${TEST} test/${TEST}.cpp $<TARGET_OBJECTS:core_obj>)
+        set_target_properties(${TEST} PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY ${TEST_OUTPUT_DIR}
+        )
         target_link_libraries(${TEST} PRIVATE gtest_main ${THIRDPARTY_LIBRARIES})
+        target_link_libraries(${TEST} PRIVATE ${Python3_LIBRARIES})
         target_include_directories(${TEST} PRIVATE ${CMAKE_SOURCE_DIR}/src/cpp/lib/include)
+        target_include_directories(${TEST} PRIVATE ${Python3_INCLUDE_DIRS})
+        include_directories(${pybind11_INCLUDE_DIRS})
         add_test(NAME ${TEST} COMMAND ${TEST})
+        message(STATUS "Adding test: ${TEST} at binary dir ${TEST_OUTPUT_DIR}/${TEST}")
     endforeach()
 endif()
