@@ -38,13 +38,18 @@ Allows for specifying a maximum area for the subgrid, useful when the interest i
 
 # Dev installation
 
-Clone the [repository](https://github.com/simonpedrogonzalez/pyscan) and run:
-
-- `make init`: initialize repository (`uv` package manager required)
-- `make cpp`: compiles C++ code into the `build` directory
-- `make py`: install the Python package in the local environment
+1. Clone the [repository](https://github.com/simonpedrogonzalez/pyscan).
+1. [Install `uv` package manager](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) if not already installed.
+2. Install CMake, Boost, GSL, CGAL if not already installed. For example, on Mac:
+    ```bash
+    brew install cmake boost gsl cgal
+    ```
+3. 
+- `make init`: initialize repository with Python 3.12 venv and install dev dependencies
+- `make cpp`: compiles C++ code into the `build/` directory
+- `make py`: builds the Python package and installs it in the venv
 - `make test`: runs the C++ tests
-- `make build`: builds distribution wheels
+- `make clean`: removes `build/`, `dist/` and packaging artifacts.
 
 # About pyscan
 
