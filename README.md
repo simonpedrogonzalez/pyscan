@@ -2,9 +2,16 @@
 
 **[pyscan-stats](https://pypi.org/project/pyscan-stats/)** is a Python package for spatial scan statistics, created from a fork of the original **[pyscan](https://github.com/michaelmathen/pyscan)** library by Michael Matheny.
 
-- Original repository: [michaelmathen/pyscan](https://github.com/michaelmathen/pyscan)
-- Original documentation: [https://michaelmathen.github.io/pyscan/](https://michaelmathen.github.io/pyscan/)
-- Updated examples with data: [https://github.com/simonpedrogonzalez/pyscan-stats-resources](https://github.com/simonpedrogonzalez/pyscan-stats-resources)
+## User Installation
+
+```bash
+pip install pyscan-stats
+```
+
+## Documentation
+
+1. Read the original documentation at [https://michaelmathen.github.io/pyscan/](https://michaelmathen.github.io/pyscan/)
+2. Ready to run examples with data are available at: [https://github.com/simonpedrogonzalez/pyscan-stats-resources](https://github.com/simonpedrogonzalez/pyscan-stats-resources)
 
 # New Features
 
@@ -30,7 +37,7 @@ max_subgrid = pyscan.max_subgrid_convex(grid, prec, disc_f, max_area)
 
 Allows for specifying a maximum area for the subgrid, useful when the interest is in smaller anomalies or when computational resources are limited. Usage example [here](https://github.com/simonpedrogonzalez/pyscan-stats-resources/blob/master/examples_with_data/AreaLimitedGridScanning.py). The implementation uses a sliding window version of Kadane's algorithm.
 
-# General Improvements
+## Improvements
 
 - Support for new Python versions (3.10+)
 - Project dependency update and organization for easier extension and maintenance.
@@ -44,8 +51,10 @@ Allows for specifying a maximum area for the subgrid, useful when the interest i
     ```bash
     brew install cmake boost gsl cgal
     ```
-3. 
-- `make init`: initialize repository with Python 3.12 venv and install dev dependencies
+3. Run `make init` to create a Python 3.12 venv in `.venv` and install dev dependencies.
+
+You are all set to start developing! The following utility commands are available:
+
 - `make cpp`: compiles C++ code into the `build/` directory
 - `make py`: builds the Python package and installs it in the venv
 - `make test`: runs the C++ tests
