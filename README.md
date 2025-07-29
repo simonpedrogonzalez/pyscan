@@ -55,10 +55,12 @@ Allows for specifying a maximum area for the subgrid, useful when the interest i
 
 You are all set to start developing! The following utility commands are available:
 
-- `make cpp`: compiles C++ code into the `build/` directory
-- `make py`: builds the Python package and installs it in the venv
-- `make test`: runs the C++ tests
+- `make cpp`: compiles C++ code into the `build/` directory.
+- `make py`: builds the Python package and installs it in the venv, with the last compiled cpp binaries.
+- `make test`: runs the C++ tests, only works after compiling the C++ code.
 - `make clean`: removes `build/`, `dist/` and packaging artifacts.
+
+Note: if an error occurs during `make cpp` or `make test`, try running `make clean` first.
 
 # About pyscan
 
