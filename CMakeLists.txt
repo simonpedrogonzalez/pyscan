@@ -15,6 +15,20 @@ set(CMAKE_CXX_FLAGS_RELEASE "-fPIC -w -O2 -march=native -DNDEBUG") #work for int
 set(CMAKE_C_FLAGS_DEBUG "-fPIC -Wall -Wextra -g -O1 -fno-omit-frame-pointer")
 set(CMAKE_C_FLAGS_RELEASE "-fPIC -w -O2 -march=native -DNDEBUG") #work for intel chip
 
+if(APPLE)
+    # Add standard Homebrew prefix paths for macOS
+    # To find CGAL, GSL, Boost installed via Homebrew
+    list(APPEND CMAKE_PREFIX_PATH
+        /opt/homebrew/opt
+        /usr/local/opt
+        /Users/${USER}/homebrew/opt
+    )
+    # Set Python3 to find static libraries and not frameworks
+    # set(Python3_FIND_FRAMEWORK NEVER)
+    # set(Python3_USE_STATIC_LIBS TRUE)
+endif()
+
+
 # Dependencies
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 find_package(pybind11 CONFIG REQUIRED)
@@ -37,6 +51,7 @@ target_include_directories(core_obj PUBLIC
     ${CMAKE_SOURCE_DIR}/thirdparty/discrepancy/include
     ${CMAKE_SOURCE_DIR}/thirdparty/kernel/ANN/include
     ${CMAKE_SOURCE_DIR}/thirdparty/kernel/coreset/include
+    ${Boost_INCLUDE_DIRS}
 )
 
 target_link_libraries(core_obj PRIVATE pybind11::module ${Python3_LIBRARIES})
