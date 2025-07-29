@@ -8,7 +8,7 @@ init:
 cpp:
 	@echo "Building..."
 	mkdir -p build
-	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DPYSCAN_BUILD_TESTS=ON
+	source .venv/bin/activate cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DPYSCAN_BUILD_TESTS=ON
 	source .venv/bin/activate && cmake --build build
 
 py:
@@ -27,6 +27,8 @@ build:
 	@rm -rf build dist *.egg-info
 	python -m build --sdist
 	@echo "Building wheels..."
+	CIBW_ENVIRONMENT='TMPDIR=/host/media/simon/HDD/strix/tmp' \
+	CIBW_BEFORE_ALL='mkdir -p /host/media/simon/HDD/strix/tmp' \
 	CIBW_BEFORE_ALL="yum install -y boost-devel CGAL-devel gsl-devel" \
 	CIBW_PRINT_BUILD_IDENTIFIERS=1 \
  	cibuildwheel --output-dir dist
