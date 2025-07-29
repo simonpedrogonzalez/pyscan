@@ -403,9 +403,7 @@ namespace pyscan
                     weight[k] += b * grid.blueWeight(j, k);
                     weight[k] += a * grid.redWeight(j, k);
                 }
-                // This is just computing the max interval over the weight vector.
-                // Basically we scan until the weight drops to less than 0 at which point
-                // we can just restart the interval here and it will always be larger.
+
                 double curr_W = 0;
                 size_t start_ix = 0;
                 for (size_t l = 0; l < grid.size(); l++)
@@ -434,43 +432,51 @@ namespace pyscan
         std::vector<double> weight(grid.size(), 0);
         Subgrid max = Subgrid(0, 0, 0, 0, -std::numeric_limits<double>::infinity());
 
-        for (size_t i = 0; i < grid.size(); i++)
-        {
+        for (size_t i = 0; i < grid.size(); i++) {
             weight.assign(grid.size(), 0);
 
             size_t max_j = std::min(i + max_area, grid.size());
 
-            for (size_t j = i; j < max_j; j++)
-            {
+            for (size_t j = i; j < max_j; j++) {
 
                 size_t width = j - i + 1;
 
-                for (size_t k = 0; k < grid.size(); k++)
-                {
+                for (size_t k = 0; k < grid.size(); k++) {
                     weight[k] += b * grid.blueWeight(j, k);
                     weight[k] += a * grid.redWeight(j, k);
                 }
-
+                
                 double curr_W = 0;
-                size_t start_ix = 0;
-                size_t max_height = max_area / width;
+                double max_height = static_cast<double>(max_area) / width;
 
-                for (size_t l = 0; l < grid.size(); l++)
-                {
+                // deque holds the possible starting points
+                std::deque<int> dq = {};
+                
+                // Prefix sums up to that point
+                std::vector<double> prefix(grid.size() + 1, 0);
+                for (size_t l = 0; l < grid.size(); l++) {
+                    prefix[l + 1] = prefix[l] + weight[l];
+                }
 
-                    size_t height = l - start_ix + 1;
-
-                    curr_W += weight[l];
-                    if (curr_W <= 0)
-                    {
-                        curr_W = 0;
-                        start_ix = l + 1;
-                        continue;
+                for (size_t l = 0; l < grid.size() + 1; l++) {
+                    
+                    // Enforce the max_area constraint
+                    if (!dq.empty() && l - dq.front() > max_height) {
+                        dq.pop_front();
                     }
+                    
+                    // Remove start points that would not yield an increasing sum
+                    while (!dq.empty() && prefix[dq.back()] > prefix[l]) {
+                        dq.pop_back();
+                    }
+                    
+                    // Add current index as a possible starting point
+                    dq.push_back(l);
+                    
+                    curr_W = prefix[l] - prefix[dq.front()];
 
-                    if (curr_W > max.fValue() && height <= max_height)
-                    {
-                        max = Subgrid(l, j, start_ix, i, curr_W);
+                    if (l > 0 && curr_W > max.fValue()) {
+                        max = Subgrid(l - 1, j, dq.front(), i, curr_W);
                     }
                 }
             }
