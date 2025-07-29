@@ -1,15 +1,19 @@
-.PHONY: dev test clean build upload upload-test init
+.PHONY: init cpp py test clean build upload upload-test
 
 init:
 	uv venv .venv
 	source .venv/bin/activate && uv pip install ".[dev]"
 	mkdir -p build
-	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DPYSCAN_BUILD_TESTS=ON
 
-dev:
-	@echo "Building and reinstalling..."
+cpp:
+	@echo "Building..."
 	mkdir -p build
-	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DPYSCAN_BUILD_TESTS=ON
+	cmake --build build
+
+py:
+	@echo "Reinstalling Python package..."
 	uv pip install . --no-deps --no-build-isolation --force-reinstall
 
 test:
