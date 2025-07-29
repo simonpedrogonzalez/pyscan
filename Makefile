@@ -1,4 +1,5 @@
 .PHONY: init cpp py test clean build upload upload-test
+SHELL := /bin/bash
 
 init:
 	uv venv .venv --python 3.12
@@ -8,7 +9,7 @@ cpp:
 	@echo "Building..."
 	mkdir -p build
 	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DPYSCAN_BUILD_TESTS=ON
-	cmake --build build
+	source .venv/bin/activate && cmake --build build
 
 py:
 	@echo "Reinstalling Python package..."
