@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
 project(pyscan LANGUAGES CXX)
 
+set(Python_EXECUTABLE "${PYTHON_EXECUTABLE}")
+set(Python_INCLUDE_DIR "${PYTHON_INCLUDE_DIR}")
+set(Python_LIBRARY "${PYTHON_LIBRARY}")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(PYBIND11_FINDPYTHON ON)
@@ -30,7 +34,7 @@ endif()
 
 
 # Dependencies
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 find_package(CGAL REQUIRED)
@@ -102,7 +106,7 @@ install(FILES
     COMPONENT default
 )
 
-option(PYSCAN_BUILD_TESTS "Build tests" ON)
+option(PYSCAN_BUILD_TESTS "Build tests" OFF)
 if(PYSCAN_BUILD_TESTS)
 
     message(STATUS "BUILDING TESTS")
