@@ -1,12 +1,13 @@
 name: Build & publish wheels
 
 on:
-  # push:
-  #   branches: [ master ]          # build every push
-  # pull_request:                 # build every PR
-  # release:                      # publish only when you create a GitHub Release
-  #   types: [published]
-  workflow_dispatch:            # manual trigger
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Upload the built wheels to PyPI?"
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   build:
@@ -48,7 +49,7 @@ jobs:
           path: wheelhouse/*
 
   publish:
-    if: github.event_name == 'release'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'true'
     needs: build
     runs-on: ubuntu-latest
     steps:
