@@ -36,7 +36,9 @@ jobs:
             { echo "CGAL-devel not found on EL7; exit"; exit 1; }
         fi
       CIBW_BEFORE_ALL_MACOS: >-
-        brew update && brew install boost cgal gsl
+          brew update &&
+          brew install boost@1.87 cgal gsl &&
+          brew link --overwrite --force boost@1.87
       CIBW_BEFORE_ALL_WINDOWS: >-
         vcpkg install boost:x64-windows gsl:x64-windows cgal:x64-windows
     steps:
