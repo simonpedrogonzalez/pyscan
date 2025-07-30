@@ -6,7 +6,7 @@ if(APPLE)
         /usr/local/opt
         /Users/${USER}/homebrew/opt
     )
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "" FORCE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0" CACHE STRING "" FORCE)
 endif()
 
 project(pyscan LANGUAGES CXX)
