@@ -53,6 +53,7 @@ target_include_directories(core_obj PUBLIC
     ${CMAKE_SOURCE_DIR}/thirdparty/kernel/coreset/include
     ${Boost_INCLUDE_DIRS}
     ${GSL_INCLUDE_DIRS}
+    ${CGAL_INCLUDE_DIRS}
 )
 
 target_link_libraries(core_obj PRIVATE pybind11::module ${Python3_LIBRARIES})
