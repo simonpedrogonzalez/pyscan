@@ -25,8 +25,7 @@ jobs:
       CIBW_BEFORE_ALL_MACOS: >-
         brew update && brew install boost cgal gsl
       CIBW_BEFORE_ALL_WINDOWS: >-
-        choco install -y boost-msvc gsl &&
-        vcpkg install cgal
+        vcpkg install boost cgal gsl
     steps:
       - uses: actions/checkout@v4
 
