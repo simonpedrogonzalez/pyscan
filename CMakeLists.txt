@@ -64,15 +64,25 @@ target_link_libraries(core_obj PUBLIC CGAL::CGAL)
 
 target_link_libraries(core_obj PRIVATE pybind11::module ${Python3_LIBRARIES})
 
+function(set_loader_path lib)
+  if(APPLE)
+    set_target_properties(${lib} PROPERTIES
+        BUILD_RPATH "@loader_path"
+        INSTALL_RPATH "@loader_path")
+  else()
+    set_target_properties(${lib} PROPERTIES
+        BUILD_RPATH "$ORIGIN"
+        INSTALL_RPATH "$ORIGIN")
+  endif()
+endfunction()
+
+set_loader_path(discrepancy)
+set_loader_path(ann)
+set_loader_path(appext)
 
 pybind11_add_module(libpyscan MODULE
     $<TARGET_OBJECTS:core_obj>
     src/cpp/bindings/libpyscan.cpp
-)
-
-set_target_properties(libpyscan PROPERTIES
-    BUILD_RPATH "$ORIGIN"
-    INSTALL_RPATH "$ORIGIN"
 )
 
 target_include_directories(ann PUBLIC
@@ -91,25 +101,20 @@ target_link_libraries(libpyscan PRIVATE
     GSL::gslcblas
 )
 
-set_target_properties(libpyscan PROPERTIES
-    BUILD_RPATH "$ORIGIN"
-    INSTALL_RPATH "$ORIGIN"
-)
-
-set_target_properties(ann PROPERTIES
-    BUILD_RPATH "$ORIGIN"
-    INSTALL_RPATH "$ORIGIN"
-)
+set_loader_path(libpyscan)
 
 # Install Python module and dependencies into the `pyscan/` package dir
-install(TARGETS libpyscan LIBRARY DESTINATION pyscan COMPONENT default)
-install(FILES
-    $<TARGET_FILE:discrepancy>
-    $<TARGET_FILE:ann>
-    $<TARGET_FILE:appext>
-    DESTINATION pyscan
-    COMPONENT default
-)
+# install(TARGETS libpyscan LIBRARY DESTINATION pyscan COMPONENT default)
+# install(FILES
+#     $<TARGET_FILE:discrepancy>
+#     $<TARGET_FILE:ann>
+#     $<TARGET_FILE:appext>
+#     DESTINATION pyscan
+#     COMPONENT default
+# )
+install(TARGETS libpyscan discrepancy ann appext
+        LIBRARY DESTINATION pyscan
+        COMPONENT default)
 
 option(PYSCAN_BUILD_TESTS "Build tests" OFF)
 if(PYSCAN_BUILD_TESTS)
