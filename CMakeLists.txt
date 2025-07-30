@@ -36,6 +36,10 @@ find_package(Boost REQUIRED)
 find_package(CGAL REQUIRED)
 find_package(GSL REQUIRED)
 
+if (APPLE AND Boost_VERSION VERSION_GREATER_EQUAL 108800)
+  add_compile_options(-include boost/multiprecision/gmp.hpp)
+endif()
+
 # Build the thirdparty libraries
 add_subdirectory(thirdparty/discrepancy)
 add_subdirectory(thirdparty/kernel/ANN)
@@ -57,10 +61,6 @@ target_include_directories(core_obj PUBLIC
 )
 
 target_link_libraries(core_obj PUBLIC CGAL::CGAL)
-
-if (APPLE)
-    target_compile_options(core_obj PRIVATE "-include" "boost/multiprecision/gmp.hpp")
-endif()
 
 target_link_libraries(core_obj PRIVATE pybind11::module ${Python3_LIBRARIES})
 
