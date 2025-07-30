@@ -18,16 +18,23 @@ set(Python_LIBRARY "${PYTHON_LIBRARY}")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(PYBIND11_FINDPYTHON ON)
+
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-# Need this for GSL
+set(CMAKE_CXX_FLAGS_DEBUG   "-fPIC -Wall -Wextra -g -O1 -fno-omit-frame-pointer")
+set(CMAKE_C_FLAGS_DEBUG     "-fPIC -Wall -Wextra -g -O1 -fno-omit-frame-pointer")
+
+set(CMAKE_CXX_FLAGS_RELEASE "-fPIC -w -O2 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE   "-fPIC -w -O2 -DNDEBUG")
+
+if(NOT APPLE)
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native")
+  set(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE}   -march=native")
+endif()
+
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
-set(CMAKE_CXX_FLAGS_DEBUG "-fPIC -Wall -Wextra -g -O1 -fno-omit-frame-pointer")
-set(CMAKE_CXX_FLAGS_RELEASE "-fPIC -w -O2 -march=native -DNDEBUG") #work for intel chip
-set(CMAKE_C_FLAGS_DEBUG "-fPIC -Wall -Wextra -g -O1 -fno-omit-frame-pointer")
-set(CMAKE_C_FLAGS_RELEASE "-fPIC -w -O2 -march=native -DNDEBUG") #work for intel chip
 
 # Dependencies
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
