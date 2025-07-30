@@ -20,8 +20,11 @@ jobs:
       CIBW_BUILD: "cp3*-*"
       CIBW_SKIP: "pp* *-musllinux*"
       CIBW_TEST_SKIP: "*"
-      CIBW_BEFORE_ALL_LINUX: >-
-        yum install -y boost-devel CGAL-devel gsl-devel
+      CIBW_BEFORE_ALL_LINUX: |
+        yum install -y yum-utils && \
+        yum-config-manager --set-enabled crb || true && \
+        yum install -y epel-release && \
+        yum install -y boost-devel gsl-devel CGAL-devel
       CIBW_BEFORE_ALL_MACOS: >-
         brew update && brew install boost cgal gsl
       CIBW_BEFORE_ALL_WINDOWS: >-
