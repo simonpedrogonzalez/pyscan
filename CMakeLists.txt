@@ -56,7 +56,14 @@ target_include_directories(core_obj PUBLIC
     ${CGAL_INCLUDE_DIRS}
 )
 
+target_link_libraries(core_obj PUBLIC CGAL::CGAL)
+
+if (APPLE)
+    target_compile_options(core_obj PRIVATE "-include" "boost/multiprecision/gmp.hpp")
+endif()
+
 target_link_libraries(core_obj PRIVATE pybind11::module ${Python3_LIBRARIES})
+
 
 pybind11_add_module(libpyscan MODULE
     $<TARGET_OBJECTS:core_obj>
