@@ -18,7 +18,7 @@ jobs:
         os: [ubuntu-22.04]
     env:
       CIBW_BUILD: "cp3*-*"
-      CIBW_SKIP: "pp* *-musllinux*"
+      CIBW_SKIP: "pp* *-musllinux* *-manylinux_i686 *-manylinux2014_i686"
       CIBW_TEST_SKIP: "*"
       CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
       CIBW_MANYLINUX_AARCH64_IMAGE: manylinux_2_28
