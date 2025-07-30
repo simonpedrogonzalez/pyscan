@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-14, windows-2022]
+        os: [macos-14]
     env:
       CIBW_BUILD: "cp3*-*"
       CIBW_SKIP: "pp* *-musllinux* *-manylinux_i686 *-manylinux2014_i686"
