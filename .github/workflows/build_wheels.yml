@@ -15,13 +15,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-13, windows-2022, macos-14]
+        os: [ubuntu-22.04, windows-2022, macos-14]
     env:
       CIBW_BUILD: "cp3*-*"
       CIBW_SKIP: "pp* *-musllinux*"
       CIBW_TEST_SKIP: "*"
       CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
       CIBW_MANYLINUX_AARCH64_IMAGE: manylinux_2_28
+      CIBW_ARCHS_MACOS: universal2
       CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=13.0"
       CIBW_BEFORE_ALL_LINUX: |
         if command -v dnf >/dev/null; then
@@ -35,9 +36,11 @@ jobs:
           yum install -y boost-devel gsl-devel CGAL-devel || \
             { echo "CGAL-devel not found on EL7; exit"; exit 1; }
         fi
-      CIBW_BEFORE_ALL_MACOS: >-
-          brew update &&
-          brew install boost@1.85 cgal gsl &&
+      CIBW_BEFORE_ALL_MACOS: |
+          export MACOSX_DEPLOYMENT_TARGET=13.0
+          brew update
+          brew install --build-from-source gmp mpfr gsl
+          brew install boost@1.85 cgal
           brew link --overwrite --force boost@1.85
       CIBW_BEFORE_ALL_WINDOWS: >-
         vcpkg install boost:x64-windows gsl:x64-windows cgal:x64-windows
