@@ -28,7 +28,7 @@ jobs:
       CIBW_BEFORE_ALL_MACOS: >-
         brew update && brew install boost cgal gsl
       CIBW_BEFORE_ALL_WINDOWS: >-
-        vcpkg install boost cgal gsl
+        vcpkg install boost:x64-windows gsl:x64-windows cgal:x64-windows
     steps:
       - uses: actions/checkout@v4
 
