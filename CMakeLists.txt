@@ -37,7 +37,12 @@ endif()
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
 # Dependencies
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
+if (PYSCAN_BUILD_TESTS)
+  find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+else()
+  find_package(Python3 COMPONENTS Interpreter Development.Module REQUIRED)
+endif()
+
 find_package(pybind11 CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 find_package(CGAL REQUIRED)
@@ -162,11 +167,17 @@ if(PYSCAN_BUILD_TESTS)
         set_target_properties(${TEST} PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY ${TEST_OUTPUT_DIR}
         )
-        target_link_libraries(${TEST} PRIVATE gtest_main ${THIRDPARTY_LIBRARIES})
-        target_link_libraries(${TEST} PRIVATE ${Python3_LIBRARIES})
-        target_include_directories(${TEST} PRIVATE ${CMAKE_SOURCE_DIR}/src/cpp/lib/include)
-        target_include_directories(${TEST} PRIVATE ${Python3_INCLUDE_DIRS})
-        include_directories(${pybind11_INCLUDE_DIRS})
+        target_link_libraries(${TEST} PRIVATE
+            gtest_main
+            pybind11::embed
+            ${THIRDPARTY_LIBRARIES}
+        )
+        # target_include_directories(${TEST} PRIVATE ${CMAKE_SOURCE_DIR}/src/cpp/lib/include)
+        # target_include_directories(${TEST} PRIVATE ${Python3_INCLUDE_DIRS})
+        target_include_directories(${TEST} PRIVATE
+            ${CMAKE_SOURCE_DIR}/src/cpp/lib/include
+        )
+        # include_directories(${pybind11_INCLUDE_DIRS})
         add_test(NAME ${TEST} COMMAND ${TEST})
         message(STATUS "Adding test: ${TEST} at binary dir ${TEST_OUTPUT_DIR}/${TEST}")
     endforeach()
