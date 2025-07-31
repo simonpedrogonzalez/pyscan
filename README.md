@@ -4,6 +4,8 @@
 
 ## User Installation
 
+Wheels for Linux and macOS 14 are available on PyPI. To install, run:
+
 ```bash
 pip install pyscan-stats
 ```
