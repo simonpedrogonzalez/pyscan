@@ -17,7 +17,7 @@ py:
 
 test:
 	@echo "Running tests..."
-	ctest --output-on-failure --test-dir build
+	source .venv/bin/activate && ctest --output-on-failure --test-dir build
 
 clean:
 	rm -rf build dist *.egg-info

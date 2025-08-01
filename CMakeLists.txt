@@ -129,7 +129,11 @@ install(TARGETS libpyscan discrepancy ann appext
         COMPONENT default)
 
 option(PYSCAN_BUILD_TESTS "Build tests" OFF)
+
 if(PYSCAN_BUILD_TESTS)
+
+    include(CTest)
+    enable_testing()
 
     message(STATUS "BUILDING TESTS")
     set(THIRDPARTY_LIBRARIES
@@ -140,9 +144,6 @@ if(PYSCAN_BUILD_TESTS)
         GSL::gsl
         GSL::gslcblas
     )
-    
-    include(CTest)
-    enable_testing()
     include(FetchContent)
     FetchContent_Declare(
         googletest
