@@ -78,3 +78,12 @@ Pyscan is a python wrapper around a large number of anomaly detection algorithms
 - [Scalable Spatial Scan Statistics through Sampling](https://dl.acm.org/citation.cfm?id=2996939)
 - [Spatial Scan Statistics: Approximations and Performance Studies](http://www.cs.utah.edu/~jeffp/papers/stat-disc-KDD06.pdf)
 - [The Hunting of the Bump: On Maximizing Statistical Discrepancy](http://www.cs.utah.edu/~jeffp/papers/stat-disc-SODA06.pdf)
+
+
+## 🛠️ Need Help?
+
+Feel free to reach out:
+
+📧 simon.pedro.g@gmail.com  
+🐙 [GitHub Issues](https://github.com/simonpedrogonzalez/pyscan/issues)
+
