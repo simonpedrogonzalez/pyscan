@@ -4,7 +4,7 @@
 
 ## User Installation
 
-Wheels for Linux and macOS 14 are available on PyPI. To install, run:
+Wheels for Linux and macOS 14+ are available on PyPI. To install, run:
 
 ```bash
 pip install pyscan-stats
@@ -66,7 +66,7 @@ Notes:
 If an error occurs executing one of the commands, try:
 - Manually activating the venv `source .venv/bin/activate` and running the command again.
 - Running `make clean` before `make cpp` to ensure a clean build.
-- This setup was tested both on macOS and Linux.
+- This setup was tested both on macOS (15.6, M2) and Linux (Ubuntu 20.04).
 
 # About pyscan
 
@@ -82,7 +82,7 @@ Pyscan is a python wrapper around a large number of anomaly detection algorithms
 
 ## 🛠️ Need Help?
 
-Feel free to reach out:
+Things never go as planned! Feel free to reach out:
 
 📧 simon.pedro.g@gmail.com  
 🐙 [GitHub Issues](https://github.com/simonpedrogonzalez/pyscan/issues)
