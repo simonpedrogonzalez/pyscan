@@ -26,7 +26,7 @@ grid = pyscan.Grid(
     )
 ```
 
-Removes the burden of instantiating in Python the `pyscan.WPoint` for each data point, which can be slow in larger datasets.
+Removes the burden of instantiating in Python the `pyscan.WPoint` for each data point, which can be slow for larger datasets.
 
 ## Area-Limited Max Convex Subgrid Scan
 
@@ -37,7 +37,7 @@ max_area = 750 # Maximum number of pixels in the subgrid
 max_subgrid = pyscan.max_subgrid_convex(grid, prec, disc_f, max_area)
 ```
 
-Allows for specifying a maximum area for the subgrid, useful when the interest is in smaller anomalies or when computational resources are limited. Usage example [here](https://github.com/simonpedrogonzalez/pyscan-stats-resources/blob/master/examples_with_data/AreaLimitedGridScanning.py). The implementation uses a sliding window version of Kadane's algorithm.
+Allows for specifying a maximum area for the subgrid, useful when the interest is in smaller anomalies or when computational resources are limited. Usage example [here](https://github.com/simonpedrogonzalez/pyscan-stats-resources/blob/master/8_AreaLimitedGridScanning.py). The implementation uses a sliding window version of Kadane's algorithm.
 
 ## Improvements
 
@@ -48,7 +48,7 @@ Allows for specifying a maximum area for the subgrid, useful when the interest i
 # Dev installation
 
 1. `git clone https://github.com/simonpedrogonzalez/pyscan`.
-1. [Install `uv` package manager](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) if not already installed.
+1. [Install `uv` package manager](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) if not already installed (you can use other package managers).
 2. Install CMake, Boost, GSL, CGAL if not already installed. For example, on Mac:
     ```bash
     brew install cmake boost gsl cgal
